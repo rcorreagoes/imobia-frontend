@@ -1,0 +1,93 @@
+<div class="trends-container">
+  <header class="trends-header">
+    <h2>Análise de Tendências Imobiliárias</h2>
+
+    <p>Acompanhe a evolução dos preços dos imóveis por região e tipo de propriedade.</p>
+  </header>
+
+  <!-- Filtros -->
+  <div class="filters-card">
+    <div class="filter-group">
+      <label for="district">Distrito</label>
+
+      <select
+        id="district"
+        name="district"
+        [(ngModel)]="selectedDistrict"
+        (change)="onDistrictChange()"
+      >
+        <option value="">Selecione um distrito</option>
+
+        <option *ngFor="let district of districts" [value]="district">
+          {{ district }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="municipality">Município</label>
+
+      <select id="municipality" name="municipality" [(ngModel)]="selectedMunicipality">
+        <option value="">Todos os municípios</option>
+
+        <option *ngFor="let municipality of availableMunicipalities" [value]="municipality">
+          {{ municipality }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="propertyType">Tipo de propriedade</label>
+
+      <select id="propertyType" name="propertyType" [(ngModel)]="selectedPropertyType">
+        <option value="">Todos os tipos</option>
+
+        <option *ngFor="let type of propertyTypes" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-actions">
+      <button
+        type="button"
+        class="btn-filter"
+        (click)="onFilterChange()"
+        [disabled]="isLoading || !selectedDistrict"
+      >
+        {{ isLoading ? 'Carregando...' : 'Aplicar Filtros' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Gráfico -->
+  <div class="chart-card">
+    <div class="chart-header">
+      <h3>
+        Evolução de Preços
+        <span *ngIf="selectedDistrict"> - {{ selectedDistrict }} </span>
+      </h3>
+    </div>
+
+    <!-- Carregamento -->
+    <div *ngIf="isLoading" class="loading-message">Carregando tendências...</div>
+
+    <!-- Erro -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Ausência de dados -->
+    <div
+      *ngIf="!isLoading && !errorMessage && chartData.datasets.length === 0"
+      class="empty-message"
+    >
+      Nenhum dado disponível para os filtros selecionados.
+    </div>
+
+    <!-- Canvas do Chart.js -->
+    <div class="chart-wrapper" [class.chart-loading]="isLoading">
+      <canvas #trendCanvas></canvas>
+    </div>
+  </div>
+</div>

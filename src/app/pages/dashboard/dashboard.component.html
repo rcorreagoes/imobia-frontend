@@ -1,0 +1,59 @@
+<div class="dashboard-container">
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="hero-content">
+      <span class="badge">PropTech Portugal 🇵🇹</span>
+      <h1>ImobAI Intelligence</h1>
+      <p>
+        Plataforma avançada de predição de preços de imóveis e análise de tendências de mercado
+        baseada em Machine Learning.
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/predict" class="btn btn-primary">Simular Preço de Imóvel</a>
+        <a routerLink="/trends" class="btn btn-outline">Ver Tendências de Mercado</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Stats Grid -->
+  <section class="stats-grid">
+    <div *ngFor="let stat of stats" class="stat-card">
+      <div class="stat-icon">{{ stat.icon }}</div>
+      <div class="stat-info">
+        <h3>{{ stat.title }}</h3>
+        <p class="stat-value">{{ stat.value }}</p>
+        <span class="stat-change">{{ stat.change }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Access Cards -->
+  <section class="features-section">
+    <h2>Módulos do Sistema</h2>
+    <div class="features-grid">
+      <!-- Card Simulador -->
+      <div class="feature-card">
+        <div class="feature-badge">ML Engine</div>
+        <h3>Simulador de Avaliação</h3>
+        <p>
+          Insira características detalhadas (área, tipologia, ano de construção, distrito e
+          concelho) para obter uma estimativa de preço em tempo real calculada pela nossa engine
+          FastAPI.
+        </p>
+        <a routerLink="/predict" class="card-link">Aceder ao Simulador &rarr;</a>
+      </div>
+
+      <!-- Card Tendências -->
+      <div class="feature-card">
+        <div class="feature-badge">Data Analytics</div>
+        <h3>Histórico e Valorização</h3>
+        <p>
+          Explore gráficos interativos com a evolução do preço mediano por metro quadrado segmentada
+          por distritos, concelhos e tipos de imóveis (apartamentos, moradias, terrenos).
+        </p>
+        <a routerLink="/trends" class="card-link">Explorar Gráficos &rarr;</a>
+      </div>
+    </div>
+  </section>
+</div>

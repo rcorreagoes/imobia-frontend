@@ -1,0 +1,168 @@
+<div class="predict-container">
+  <header class="predict-header">
+    <h1>Simulador de Preço Imobiliário</h1>
+    <p>
+      Insira os parâmetros do imóvel para calcular o valor estimado com base no nosso modelo de
+      Machine Learning.
+    </p>
+  </header>
+
+  <div class="predict-grid">
+    <!-- Formulário -->
+    <form [formGroup]="predictForm" class="predict-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="District">Distrito</label>
+          <select
+            id="District"
+            formControlName="District"
+            (change)="onDistrictChange()"
+            class="form-control"
+          >
+            <option *ngFor="let d of districts" [value]="d">{{ d }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="Municipality">Município / Concelho</label>
+          <select id="Municipality" formControlName="City" class="form-control">
+            <option value="">Selecione um concelho</option>
+            <option *ngFor="let m of availableMunicipalities" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="Type">Tipo de Imóvel</label>
+          <select id="Type" formControlName="Type" class="form-control">
+            <option *ngFor="let t of propertyTypes" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="TotalArea">Área Total (m²)</label>
+          <input
+            type="number"
+            id="TotalArea"
+            formControlName="TotalArea"
+            placeholder="Ex: 120"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="LivingArea">Área Útil (m²)</label>
+          <input
+            type="number"
+            id="LivingArea"
+            formControlName="LivingArea"
+            placeholder="Ex: 100"
+            class="form-control"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="Rooms">Quartos (T)</label>
+          <input
+            type="number"
+            id="Rooms"
+            formControlName="NumberOfBedrooms"
+            placeholder="Ex: 3"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="Bathrooms">WCs</label>
+          <input
+            type="number"
+            id="Bathrooms"
+            formControlName="NumberOfBathrooms"
+            placeholder="Ex: 2"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="Garage">Garagem</label>
+          <select id="Garage" formControlName="Garage" class="form-control">
+            <option value="False">Sim</option>
+            <option value="True">Não</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="Elevator">Elevador</label>
+          <select id="Elevator" formControlName="Elevator" class="form-control">
+            <option value="False">Sim</option>
+            <option value="True">Não</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="EnergyCertificate">Certificado Energético</label>
+        <select id="EnergyCertificate" formControlName="EnergyCertificate" class="form-control">
+          <option value="">Não especificado</option>
+          <option *ngFor="let option of energyEfficiencyOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ConstructionYear">Ano de Construção</label>
+        <input
+          type="number"
+          id="ConstructionYear"
+          formControlName="ConstructionYear"
+          placeholder="Ex: 2020"
+          class="form-control"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="btn-submit"
+        [disabled]="predictForm.invalid"
+        (click)="calculate()"
+      >
+        Calcular Preço
+      </button>
+    </form>
+
+    <!-- Painel de Resultado -->
+    <div class="result-panel">
+      <h3>Resultado da Avaliação</h3>
+
+      <div *ngIf="predictionResult" class="result-card success">
+        <span class="result-label">Preço Estimado</span>
+        <div class="result-value">
+          {{ predictionResult.estimated_price_eur | currency: 'EUR' : 'symbol' : '1.0-0' }}
+        </div>
+        <p class="result-details">
+          Preço estimado por m²:
+          <strong *ngIf="predictionResult.estimated_price_sqm !== null; else notAvailable">{{
+            predictionResult.estimated_price_sqm | currency: 'EUR' : 'symbol' : '1.0-0'
+          }}</strong>
+          <ng-template #notAvailable>N/D</ng-template>
+        </p>
+      </div>
+
+      <div *ngIf="errorMessage" class="result-card error">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <div *ngIf="!predictionResult && !errorMessage" class="result-placeholder">
+        <p>Preencha os campos ao lado e clique em "Calcular Preço" para ver a predição da IA.</p>
+      </div>
+    </div>
+  </div>
+</div>
